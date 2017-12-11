@@ -1,0 +1,35 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+long numof(int bit) {
+	if (bit == 1) return 10;
+	long ans = 9;
+	for (int i = 1; i < bit; i++)
+		ans = ans * 10;
+	return ans;
+}
+
+int whichnum(long pos) {
+	long count = 0;
+	int bit = 1;
+
+	while (count < pos) {
+		count += numof(bit++);
+	}
+	//bit-1是pos所在的数字是几位数
+	//pos-count+numof(bit-1)是这个数字是第几位（批）的第几个数字
+
+	long num = (pos - count + numof(bit - 1)) / bit;
+
+	return count-numof(bit-1);
+}
+
+int main() {
+	cout << whichnum(100);
+	int a;
+	cin >> a;
+
+}
