@@ -1,0 +1,59 @@
+##hihocoder 1351 Popular Products
+
+###tag
+STL
+
+###注意
+1. map的便历写法(iterator)
+2. map的key set是**有序**的
+3. 用map来做数字统计的写法
+
+###code
+
+```
+#include <iostream>
+#include <map>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+int main() {
+	int n;
+	cin >> n;
+
+	map<string, int> product_count;
+
+	for (int i = 0; i < n; i++) {
+		int m;
+		cin >> m;
+		set<string> this_list_products;
+		//put all no redundant products in this list put in to map to analyze each unique product
+		//appear time
+		for (int j = 0; j < m; j++) {
+			string id, time, price;
+			cin >> id;
+			cin >> time;
+			cin >> price;
+
+			this_list_products.insert(id + price);
+
+		}
+
+		for (string str : this_list_products) {
+			product_count[str]++;
+		}
+	}
+
+	for (map<string, int>::iterator it = product_count.begin(); it != product_count.end(); it++) {
+		if (it->second == n) {
+			cout << it->first.substr(0, 9) << endl;
+		}
+	}
+
+
+
+	return 0;
+}
+```
+
