@@ -1,0 +1,58 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        return helper(0, pre.size()-1, 0, vin.size()-1, pre, vin);
+
+    }
+    
+    TreeNode* helper(int pre_start, int pre_end, int vin_start, int vin_end, vector<int> pre, vector<int> vin) {
+        if(pre_end-pre_start != vin_end-vin_start) return NULL;
+        
+        //如果只有一个数字，创造节点并返回
+        if(pre_end == pre_start)
+        {
+            TreeNode* root = new TreeNode(pre[pre_start]);
+            return root;
+        }
+        
+        int root_val = pre[pre_start];
+        int root_index;
+        TreeNode* root = new TreeNode(root_val);
+        
+        for(int i = vin_start; i <= vin_end; i++)
+        {
+            if(vin[i] == root_val)
+                root_index = i;
+        }
+        
+        int new_pre_start = pre_start+1;
+        int new_pre_end = pre_start + root_index - vin_start;
+        int new_vin_start = vin_start;
+        int new_vin_end = root_index-1;
+        
+        TreeNode* left_tree = helper(new_pre_start, new_pre_end, new_vin_start, new_vin_end, pre, vin);
+        
+        int right_pre_start = pre_start + root_index - vin_start + 1;
+        int right_pre_end = pre_end;
+        int right_vin_start = root_index+1;
+        int right_vin_end = vin_end;
+        
+        TreeNode* right_tree = helper(right_pre_start, right_pre_end, right_vin_start, right_vin_end, pre, vin);
+        
+        root->left = left_tree;
+        root->right = right_tree;
+        
+        return root;
+        
+        
+    }
+};
