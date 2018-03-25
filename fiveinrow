@@ -1,0 +1,103 @@
+class Piece {
+    constructor(row, col, side)
+    {
+        this.row = row;
+        this.col = col;
+        this.side = side;
+    }
+}
+
+class ChessBoard {
+    constructor(row, col, board) {
+        this.row = row;
+        this.col = col;
+        if(board === undefined) {
+            let tboard = new Array();
+            for(let i = 0; i < row; i++)
+            {
+                tboard[i] = new Array();
+                for(let j = 0; j < col; j++)
+                    tboard[i][j] = 0;
+            }
+            this.board = tboard;
+        } else {
+            this.board = board;
+        }
+    }
+
+    //检查[row,col]位置是否合法
+    check_valid(row, col) {
+        return !(row < 0 || row >= this.row || col < 0 || col >= this.col || this.board[row][col] !== 0);
+    }
+
+    //打印棋盘
+    print_board() {
+        let boardstr = '';
+        for(let i = 0; i < this.row; i++) {
+            for(let j = 0; j < this.col; j++) {
+                boardstr = boardstr + this.board[i][j] + ' ';
+            }
+            boardstr += '\n';
+        }
+        console.log(boardstr);
+    }
+
+    //评分
+    evaluate(row, col)
+    {
+        //没有棋子
+        //有1-4个自己棋子
+        //有1-4个对方棋子
+        //其他
+        let score_table = [7, 35, 800, 15000, 800000, 15, 400, 1800, 100000, 0, 0];
+        //最后一个落子是那一方
+        let side = this.board[row][col];
+        let to_select = this.get_around(row, col);
+        for(let i = 0; i < to_select.length; i++)
+        {
+            let cur_piece = to_select[i];
+            let sum = 0;
+
+            for(let offset = -4; offset <= 0; j++)
+            {
+                let tmp = [cur_piece[0]+offset, cur_piece[1]+offset];
+                //统计横向的
+                for(let j = 0; j < 5; j++)
+                {
+                    let selfcnt = 0;
+                    let nselfcnt = 0;
+                    
+                }
+            }
+
+        }
+
+
+
+    }
+
+    get_around(row, col)
+    {
+        let to_select_pieces = [];
+        for(let i = row-1; i <= row+1; i++)
+            for(let j = col-1; j <=col+1; j++)
+            {
+
+                if(i !== row || j !== col){
+                    console.log(i,j)
+                    if(this.check_valid(i, j))
+                        to_select_pieces.push([i, j]);
+                }
+            }
+        return to_select_pieces;
+    }
+}
+
+function __main() {
+    let array = [[0,0,1,0,0], [0,0,1,1,0], [0,0,0,0,1], [1,0,0,0,0], [1,0,0,0,0]];
+    let myboard = new ChessBoard(5,5, array);
+    myboard.print_board();
+    console.log(myboard.get_around(1,2))
+}
+
+__main();
